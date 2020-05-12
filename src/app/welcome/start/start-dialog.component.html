@@ -1,0 +1,50 @@
+
+<mat-dialog-content>
+  <mat-horizontal-stepper>
+    <mat-step [stepControl]="aliasFormGroup">
+      <form [formGroup]="aliasFormGroup">
+        <mat-tab-group mat-stretch-tabs animationDuration="0">
+          <mat-tab>
+            <ng-template mat-tab-label><h2>Choose an alias</h2></ng-template>
+            <p></p>
+            <div fxLayout="column" fxLayoutAlign="space-evenly">
+              <mat-form-field appearance="outline">
+                <mat-label>Alias</mat-label>
+                <input matInput formControlName="aliasCtrl" required>
+              </mat-form-field>
+              <button mat-button matStepperNext>Next</button>
+            </div>
+          </mat-tab>
+        </mat-tab-group>
+      </form>
+    </mat-step>
+    <mat-step [stepControl]="secondFormGroup">
+      <form [formGroup]="secondFormGroup">
+        <mat-tab-group mat-stretch-tabs animationDuration="0">
+          <mat-tab>
+            <ng-template mat-tab-label><h2>Create</h2></ng-template>
+            <div fxLayout="column" fxLayoutAlign="space-evenly">
+              <p></p>
+              <mat-form-field appearance="outline">
+                <mat-label>Password</mat-label>
+                <input matInput formControlName="password" required>
+              </mat-form-field>
+              <button mat-button>Create</button>
+            </div>
+          </mat-tab>
+          <mat-tab>
+            <ng-template mat-tab-label><h2>Join</h2></ng-template>
+            <div fxLayout="column" fxLayoutAlign="space-evenly">
+              <p></p>
+              <mat-form-field appearance="outline">
+                <mat-label>Code Room</mat-label>
+                <input matInput formControlName="codeRoom" required>
+              </mat-form-field>
+              <button mat-button>Join</button>
+            </div>
+          </mat-tab>
+        </mat-tab-group>
+      </form>
+    </mat-step>
+  </mat-horizontal-stepper>
+</mat-dialog-content>

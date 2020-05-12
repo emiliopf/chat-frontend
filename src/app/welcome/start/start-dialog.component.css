@@ -1,0 +1,8 @@
+:host ::ng-deep .mat-horizontal-stepper-header-container { display: none; }
+
+:host ::ng-deep .mat-dialog-content {
+  padding: 0px;
+}
+mat-form-field {
+  display: block;
+}
