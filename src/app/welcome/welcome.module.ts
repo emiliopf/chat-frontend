@@ -14,6 +14,7 @@ import { FlexLayoutModule } from '@angular/flex-layout';
 
 import { StartComponent, StartDialogComponent } from './start/start.component';
 import { WelcomeRoutingModule } from './welcome-routing.module';
+import { UsersModule } from '../users/users.module';
 
 
 @NgModule({
@@ -30,6 +31,7 @@ import { WelcomeRoutingModule } from './welcome-routing.module';
     MatTabsModule,
     FlexLayoutModule,
     WelcomeRoutingModule,
+    UsersModule
   ]
 })
 export class WelcomeModule { }

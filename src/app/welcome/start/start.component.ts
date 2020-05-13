@@ -1,10 +1,8 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, ViewChild } from '@angular/core';
 import { MatDialog } from '@angular/material/dialog';
 import { FormGroup, FormBuilder, Validators } from '@angular/forms';
-
-export interface DialogData {
-  alias: string;
-}
+import { UsersService } from '../../users/users.service';
+import { MatStepper } from '@angular/material/stepper';
 
 @Component({
   selector: 'app-start',
@@ -13,22 +11,17 @@ export interface DialogData {
 })
 export class StartComponent implements OnInit {
 
-  alias: string;
   constructor(public dialog: MatDialog) {}
 
   openDialog() {
-    const dialogRef = this.dialog.open(StartDialogComponent, {
-      height: '230px',
-      width: '420px',
-    });
+    const dialogRef = this.dialog.open(StartDialogComponent);
 
     dialogRef.afterClosed().subscribe(result => {
       console.log(`Dialog result: ${result}`);
     });
   }
 
-  ngOnInit(): void {
-  }
+  ngOnInit(): void {}
 
 }
 
@@ -36,22 +29,44 @@ export class StartComponent implements OnInit {
   selector: 'app-start-dialog',
   templateUrl: './start-dialog.component.html',
   styleUrls: ['./start-dialog.component.css'],
+  providers: [UsersService]
 })
 export class StartDialogComponent implements OnInit{
-  aliasFormGroup: FormGroup;
+  @ViewChild('dialogStepper') dialogStepper: MatStepper;
+  userFormGroup: FormGroup;
   secondFormGroup: FormGroup;
+  isUserDone = false;
 
-  constructor(private formBuilder: FormBuilder) {}
+  constructor(private fb: FormBuilder, private usersService: UsersService) {}
 
   ngOnInit() {
-    this.aliasFormGroup = this.formBuilder.group({
+    this.userFormGroup = this.fb.group({
       aliasCtrl: ['', Validators.required]
     });
 
-    this.secondFormGroup = this.formBuilder.group({
+    this.secondFormGroup = this.fb.group({
       password: ['', Validators.required],
       codeRoom: ['', Validators.required]
     });
+  }
+
+  createUser() {
+    const { aliasCtrl: alias } = this.userFormGroup.value ;
+    return this.usersService.createUser({alias})
+      .subscribe({
+        complete: () => {
+          console.log('finish user creation');
+        },
+        next: (res) => {
+          console.log(res);
+          this.isUserDone = true;
+          this.dialogStepper.next();
+        },
+        error: (err) => {
+          console.error('kapachao!');
+          console.log(err);
+        }
+      });
   }
 
 }

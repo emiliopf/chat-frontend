@@ -3,8 +3,8 @@ kind: Service
 metadata:
   name: frontend
 spec:
-  ports:
-  - port: 80
-  type: LoadBalancer
   selector:
     app: frontend
+  ports:
+  - port: 80
+    targetPort: 80

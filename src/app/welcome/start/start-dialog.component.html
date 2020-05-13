@@ -1,18 +1,18 @@
 
 <mat-dialog-content>
-  <mat-horizontal-stepper>
-    <mat-step [stepControl]="aliasFormGroup">
-      <form [formGroup]="aliasFormGroup">
+  <mat-horizontal-stepper linear #dialogStepper>
+    <mat-step [stepControl]="userFormGroup" [completed]="isUserDone">
+      <form [formGroup]="userFormGroup">
         <mat-tab-group mat-stretch-tabs animationDuration="0">
           <mat-tab>
-            <ng-template mat-tab-label><h2>Choose an alias</h2></ng-template>
+            <ng-template mat-tab-label><h2>Choose an user</h2></ng-template>
             <p></p>
             <div fxLayout="column" fxLayoutAlign="space-evenly">
               <mat-form-field appearance="outline">
                 <mat-label>Alias</mat-label>
                 <input matInput formControlName="aliasCtrl" required>
               </mat-form-field>
-              <button mat-button matStepperNext>Next</button>
+              <button mat-button (click)="createUser()" [disabled]="!userFormGroup.valid">Next</button>
             </div>
           </mat-tab>
         </mat-tab-group>
