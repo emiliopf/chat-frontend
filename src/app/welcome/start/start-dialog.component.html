@@ -27,9 +27,9 @@
               <p></p>
               <mat-form-field appearance="outline">
                 <mat-label>Password</mat-label>
-                <input matInput formControlName="password" required>
+                <input matInput formControlName="passwordCtrl" required>
               </mat-form-field>
-              <button mat-button>Create</button>
+              <button mat-button (click)="createRoom()">Create</button>
             </div>
           </mat-tab>
           <mat-tab>
@@ -38,7 +38,7 @@
               <p></p>
               <mat-form-field appearance="outline">
                 <mat-label>Code Room</mat-label>
-                <input matInput formControlName="codeRoom" required>
+                <input matInput formControlName="codeRoomCtrl" required>
               </mat-form-field>
               <button mat-button>Join</button>
             </div>

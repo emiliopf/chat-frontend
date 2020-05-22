@@ -4,9 +4,11 @@
 
 export const environment = {
   production: false,
-  users_protocol: 'http',
+  http_protocol: 'http',
   users_domain: 'localhost',
-  users_port: '3000'
+  users_port: '3000',
+  rooms_domain: 'localhost',
+  rooms_port: '3001'
 };
 
 /*

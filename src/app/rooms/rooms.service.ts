@@ -1,30 +1,22 @@
 import { Injectable } from '@angular/core';
 import { HttpClient, HttpErrorResponse } from '@angular/common/http';
+import { environment } from 'src/environments/environment';
+import { catchError } from 'rxjs/operators';
 import { throwError } from 'rxjs';
-import { catchError, retry } from 'rxjs/operators';
-import { environment } from '../../environments/environment';
-
 
 @Injectable({
   providedIn: 'root'
 })
-export class UsersService {
+export class RoomsService {
 
   constructor(private http: HttpClient) { }
 
-
-  createUser(data) {
-    return this.http.post(`${environment.http_protocol}://${environment.users_domain}:${environment.users_port}/users/create`, data)
+  createRoom(data) {
+    return this.http.post(`${environment.http_protocol}://${environment.rooms_domain}:${environment.rooms_port}/rooms/create`, data)
       .pipe(
         catchError(this.handleError)
       );
   }
-
-  storeToken(response) {
-    const { token } = response;
-    localStorage.setItem('token', token);
-  }
-
 
   private handleError(error: HttpErrorResponse) {
     if (error.error instanceof ErrorEvent) {
@@ -41,5 +33,4 @@ export class UsersService {
     return throwError(
       'Something bad happened; please try again later.');
   }
-
 }

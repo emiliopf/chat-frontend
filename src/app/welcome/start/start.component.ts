@@ -3,6 +3,7 @@ import { MatDialog } from '@angular/material/dialog';
 import { FormGroup, FormBuilder, Validators } from '@angular/forms';
 import { UsersService } from '../../users/users.service';
 import { MatStepper } from '@angular/material/stepper';
+import { RoomsService } from 'src/app/rooms/rooms.service';
 
 @Component({
   selector: 'app-start',
@@ -37,7 +38,11 @@ export class StartDialogComponent implements OnInit{
   secondFormGroup: FormGroup;
   isUserDone = false;
 
-  constructor(private fb: FormBuilder, private usersService: UsersService) {}
+  constructor(
+    private fb: FormBuilder,
+    private usersService: UsersService,
+    private roomsService: RoomsService
+    ) {}
 
   ngOnInit() {
     this.userFormGroup = this.fb.group({
@@ -45,9 +50,26 @@ export class StartDialogComponent implements OnInit{
     });
 
     this.secondFormGroup = this.fb.group({
-      password: ['', Validators.required],
-      codeRoom: ['', Validators.required]
+      passwordCtrl: ['', Validators.required],
+      codeRoomCtrl: ['', Validators.required]
     });
+  }
+
+  createRoom() {
+    const { passwordCtrl: password } = this.secondFormGroup.value ;
+    return this.roomsService.createRoom({password})
+      .subscribe({
+        complete: () => {
+          console.log('finish room creation');
+        },
+        next: (res) => {
+          console.log(res);
+        },
+        error: (err) => {
+          console.error('kapachao!');
+          console.log(err);
+        }
+      });
   }
 
   createUser() {
@@ -55,12 +77,13 @@ export class StartDialogComponent implements OnInit{
     return this.usersService.createUser({alias})
       .subscribe({
         complete: () => {
+          this.isUserDone = true;
+          this.dialogStepper.next();
           console.log('finish user creation');
         },
         next: (res) => {
           console.log(res);
-          this.isUserDone = true;
-          this.dialogStepper.next();
+          this.usersService.storeToken(res);
         },
         error: (err) => {
           console.error('kapachao!');

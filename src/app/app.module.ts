@@ -8,7 +8,7 @@ import { AppRoutingModule } from './app-routing.module';
 import { AppComponent } from './app.component';
 import { WelcomeModule } from './welcome/welcome.module';
 import { MqttExampleComponent } from './mqtt-example/mqtt-example.component';
-
+import { httpInterceptorProviders } from './http-interceptors/index';
 @NgModule({
   declarations: [
     AppComponent,
@@ -26,7 +26,7 @@ import { MqttExampleComponent } from './mqtt-example/mqtt-example.component';
     AppRoutingModule,
     WelcomeModule,
   ],
-  providers: [],
+  providers: [httpInterceptorProviders],
   bootstrap: [AppComponent]
 })
 export class AppModule { }
