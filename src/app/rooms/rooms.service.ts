@@ -18,6 +18,28 @@ export class RoomsService {
       );
   }
 
+  roomInfo(data) {
+    return this.http.get(`${environment.http_protocol}://${environment.rooms_domain}:${environment.rooms_port}/rooms/${data}`)
+      .pipe(
+        catchError(this.handleError)
+      );
+  }
+
+  checkRoom(data) {
+    return this.http.get(`${environment.http_protocol}://${environment.rooms_domain}:${environment.rooms_port}/rooms/info/${data}`)
+      .pipe(
+        catchError(this.handleError)
+      );
+  }
+
+  joinRoom(idRoom, password) {
+    return this
+    .http.post(`${environment.http_protocol}://${environment.rooms_domain}:${environment.rooms_port}/rooms/login`, {idRoom, password})
+      .pipe(
+        catchError(this.handleError)
+      );
+  }
+
   private handleError(error: HttpErrorResponse) {
     if (error.error instanceof ErrorEvent) {
       // A client-side or network error occurred. Handle it accordingly.

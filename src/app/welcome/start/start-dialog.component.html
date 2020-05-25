@@ -1,6 +1,7 @@
 
 <mat-dialog-content>
   <mat-horizontal-stepper linear #dialogStepper>
+    <!-- User step -->
     <mat-step [stepControl]="userFormGroup" [completed]="isUserDone">
       <form [formGroup]="userFormGroup">
         <mat-tab-group mat-stretch-tabs animationDuration="0">
@@ -18,33 +19,51 @@
         </mat-tab-group>
       </form>
     </mat-step>
-    <mat-step [stepControl]="secondFormGroup">
-      <form [formGroup]="secondFormGroup">
-        <mat-tab-group mat-stretch-tabs animationDuration="0">
-          <mat-tab>
+    <!-- Room step -->
+    <mat-step>
+      <mat-tab-group mat-stretch-tabs animationDuration="0">
+        <!-- Create room-->
+        <mat-tab>
+          <form [formGroup]="createRoomFormGroup">
             <ng-template mat-tab-label><h2>Create</h2></ng-template>
             <div fxLayout="column" fxLayoutAlign="space-evenly">
               <p></p>
               <mat-form-field appearance="outline">
                 <mat-label>Password</mat-label>
-                <input matInput formControlName="passwordCtrl" required>
+                <input matInput formControlName="createpasswordCtrl" required>
               </mat-form-field>
-              <button mat-button (click)="createRoom()">Create</button>
+              <button mat-button (click)="createRoom()" [disabled]="!createRoomFormGroup.valid">Create</button>
             </div>
-          </mat-tab>
+          </form>
+        </mat-tab>
+
+        <!-- Join room -->
+        <form [formGroup]="joinRoomFormGroup">
           <mat-tab>
             <ng-template mat-tab-label><h2>Join</h2></ng-template>
-            <div fxLayout="column" fxLayoutAlign="space-evenly">
-              <p></p>
-              <mat-form-field appearance="outline">
-                <mat-label>Code Room</mat-label>
-                <input matInput formControlName="codeRoomCtrl" required>
-              </mat-form-field>
-              <button mat-button>Join</button>
-            </div>
+            <p></p>
+            <!-- <mat-horizontal-stepper linear #joinStepper> -->
+              <!-- Check room exists step -->
+              <div fxLayout="column" fxLayoutAlign="space-evenly" *ngIf="!roomExist">
+                <mat-form-field appearance="outline">
+                  <mat-label>Code Room</mat-label>
+                  <input matInput formControlName="joinRoomIdCtrl" required>
+                </mat-form-field>
+                <button mat-button (click)="checkRoom()">Next</button>
+              </div>
+              <!-- Password room step-->
+              <div fxLayout="column" fxLayoutAlign="space-evenly" *ngIf="roomExist">
+                <mat-form-field appearance="outline" >
+                  <mat-label>Password Room</mat-label>
+                  <input matInput formControlName="joinRoomPasswordCtrl" required>
+                </mat-form-field>
+                <button mat-button (click)="joinRoom()">Join</button>
+              </div>
+            <!-- </mat-horizontal-stepper> -->
+
           </mat-tab>
-        </mat-tab-group>
-      </form>
+        </form>
+      </mat-tab-group>
     </mat-step>
   </mat-horizontal-stepper>
 </mat-dialog-content>

@@ -3,6 +3,11 @@
 :host ::ng-deep .mat-dialog-content {
   padding: 0px;
 }
+/* :host ::ng-deep .mat-horizontal-content-container { padding: 12px; } */
+
+mat-form-field {
+  width: 100%;
+}
 mat-form-field {
   display: block;
 }
