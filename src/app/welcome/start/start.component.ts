@@ -64,7 +64,8 @@ export class StartDialogComponent implements OnInit{
 
   joinRoom() {
     const { joinRoomIdCtrl: idRoom , joinRoomPasswordCtrl: password } = this.joinRoomFormGroup.value;
-    return this.roomsService.joinRoom(idRoom, password)
+    const { aliasCtrl: alias } = this.userFormGroup.value;
+    return this.roomsService.joinRoom(idRoom, password, alias)
       .subscribe({
         complete: () => {
           console.log('complete join room');
@@ -72,7 +73,8 @@ export class StartDialogComponent implements OnInit{
         },
         next: (res: any) => {
           console.log(res);
-          this.router.navigate([`/rooms/${res.idRoom}`]);
+          this.usersService.storeToken(res);
+          this.router.navigate(['/play']);
         },
         error: (err) => {
           console.error('kapachao!');
@@ -81,6 +83,10 @@ export class StartDialogComponent implements OnInit{
     });
   }
 
+  joinReset() {
+    this.roomExist = false;
+    this.joinRoomFormGroup.reset();
+  }
 
   checkRoom() {
     const { joinRoomIdCtrl: idRoom } = this.joinRoomFormGroup.value;
@@ -101,8 +107,9 @@ export class StartDialogComponent implements OnInit{
   }
 
   createRoom() {
-    const { createpasswordCtrl: password } = this.createRoomFormGroup.value ;
-    return this.roomsService.createRoom({password})
+    const { createpasswordCtrl: password } = this.createRoomFormGroup.value;
+    const { aliasCtrl: alias } = this.userFormGroup.value;
+    return this.roomsService.createRoom({alias, password})
       .subscribe({
         complete: () => {
           console.log('complete crete room');
@@ -110,7 +117,9 @@ export class StartDialogComponent implements OnInit{
         },
         next: (res: any) => {
           console.log(res);
-          this.router.navigate([`/rooms/${res.id}`]);
+          this.usersService.storeToken(res);
+          // this.router.navigate([`/rooms/${alias}`]);
+          this.router.navigate(['/play']);
         },
         error: (err) => {
           console.error('kapachao!');
@@ -119,24 +128,24 @@ export class StartDialogComponent implements OnInit{
       });
   }
 
-  createUser() {
-    const { aliasCtrl: alias } = this.userFormGroup.value ;
-    return this.usersService.createUser({alias})
-      .subscribe({
-        complete: () => {
-          this.isUserDone = true;
-          this.dialogStepper.next();
-          console.log('finish user creation');
-        },
-        next: (res) => {
-          console.log(res);
-          this.usersService.storeToken(res);
-        },
-        error: (err) => {
-          console.error('kapachao!');
-          console.log(err);
-        }
-      });
-  }
+  // createUser() {
+  //   const { aliasCtrl: alias } = this.userFormGroup.value;
+  //   return this.usersService.createUser({alias})
+  //     .subscribe({
+  //       complete: () => {
+  //         this.isUserDone = true;
+  //         this.dialogStepper.next();
+  //         console.log('finish user creation');
+  //       },
+  //       next: (res) => {
+  //         console.log(res);
+  //         this.usersService.storeToken(res);
+  //       },
+  //       error: (err) => {
+  //         console.error('kapachao!');
+  //         console.log(err);
+  //       }
+  //     });
+  // }
 
 }

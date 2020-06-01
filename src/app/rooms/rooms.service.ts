@@ -32,12 +32,14 @@ export class RoomsService {
       );
   }
 
-  joinRoom(idRoom, password) {
+  joinRoom(idRoom: number, password: string, alias: string) {
     return this
-    .http.post(`${environment.http_protocol}://${environment.rooms_domain}:${environment.rooms_port}/rooms/login`, {idRoom, password})
-      .pipe(
-        catchError(this.handleError)
-      );
+    .http.post(
+      `${environment.http_protocol}://${environment.rooms_domain}:${environment.rooms_port}/rooms/login`,
+      {idRoom, password, alias}
+    ).pipe(
+      catchError(this.handleError)
+    );
   }
 
   private handleError(error: HttpErrorResponse) {

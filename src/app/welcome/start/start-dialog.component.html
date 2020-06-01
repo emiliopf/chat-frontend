@@ -13,7 +13,7 @@
                 <mat-label>Alias</mat-label>
                 <input matInput formControlName="aliasCtrl" required>
               </mat-form-field>
-              <button mat-button (click)="createUser()" [disabled]="!userFormGroup.valid">Next</button>
+              <button mat-button matStepperNext [disabled]="!userFormGroup.valid">Next</button>
             </div>
           </mat-tab>
         </mat-tab-group>
@@ -57,7 +57,10 @@
                   <mat-label>Password Room</mat-label>
                   <input matInput formControlName="joinRoomPasswordCtrl" required>
                 </mat-form-field>
-                <button mat-button (click)="joinRoom()">Join</button>
+                <div fxLayout="row" fxLayoutAlign="center center">
+                  <button fxFlex="50" mat-button (click)="joinReset()">Back</button>
+                  <button fxFlex="50" mat-button (click)="joinRoom()">Join</button>
+                </div>
               </div>
             <!-- </mat-horizontal-stepper> -->
 

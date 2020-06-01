@@ -3,6 +3,7 @@ import { MqttService, IMqttMessage } from 'ngx-mqtt';
 import { ActivatedRoute } from '@angular/router';
 import { Subscription } from 'rxjs';
 import { MatTableDataSource } from '@angular/material/table';
+import * as jwt_decode from 'jwt-decode';
 
 
 export interface RoomInfo {
@@ -20,19 +21,20 @@ export class RoomInfoComponent implements OnInit, OnDestroy {
   displayedColumns: string[] = ['rol', 'alias'];
   dataSource = new MatTableDataSource<[RoomInfo]>();
   subcription: Subscription;
+  decodedToken;
 
   constructor(
     private route: ActivatedRoute,
     private mqqtService: MqttService
-    ) { }
+  ) { }
 
   ngOnInit(): void {
-    const idRoom = this.route.snapshot.paramMap.get('idRoom');
+    this.decodedToken = jwt_decode(localStorage.getItem('token'));
+    const { idRoom } = this.decodedToken;
     const topic = `O${idRoom}ROOM`;
     console.log(topic);
     this.subscribeRoomTopic(topic);
   }
-
 
   ngOnDestroy(): void {
     this.subcription.unsubscribe();

@@ -7,7 +7,8 @@ import { RoomInfoComponent } from './rooms/info/info.component';
 const routes: Routes = [
   { path: '', redirectTo: 'welcome', pathMatch: 'full' },
   { path: 'welcome', component: StartComponent },
-  { path: 'rooms/:idRoom', component: RoomInfoComponent },
+  // { path: 'rooms/:alias', component: RoomInfoComponent },
+  { path: 'play', component: RoomInfoComponent },
   { path: 'mqtt-example', component: MqttExampleComponent },
 ];
 
