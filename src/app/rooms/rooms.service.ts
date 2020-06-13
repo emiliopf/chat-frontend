@@ -42,6 +42,30 @@ export class RoomsService {
     );
   }
 
+  joinRoomSuccess() {
+    console.log('join success init');
+    return this.http.post(`${environment.http_protocol}://${environment.rooms_domain}:${environment.rooms_port}/rooms/loginsuccess`, {})
+    .pipe(
+      catchError(this.handleError)
+    );
+  }
+
+  sendRoomInfo(data: any) {
+    console.log('sendRoomInfo');
+    return this.http.post(`${environment.http_protocol}://${environment.rooms_domain}:${environment.rooms_port}/rooms/sendinfo`, data)
+      .pipe(
+        catchError(this.handleError)
+      );
+  }
+
+  logout() {
+    console.log('logoutService');
+    return this.http.post(`${environment.http_protocol}://${environment.rooms_domain}:${environment.rooms_port}/rooms/logout`, {})
+      .pipe(
+        catchError(this.handleError)
+      );
+  }
+
   private handleError(error: HttpErrorResponse) {
     if (error.error instanceof ErrorEvent) {
       // A client-side or network error occurred. Handle it accordingly.

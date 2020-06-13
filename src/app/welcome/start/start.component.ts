@@ -128,24 +128,4 @@ export class StartDialogComponent implements OnInit{
       });
   }
 
-  // createUser() {
-  //   const { aliasCtrl: alias } = this.userFormGroup.value;
-  //   return this.usersService.createUser({alias})
-  //     .subscribe({
-  //       complete: () => {
-  //         this.isUserDone = true;
-  //         this.dialogStepper.next();
-  //         console.log('finish user creation');
-  //       },
-  //       next: (res) => {
-  //         console.log(res);
-  //         this.usersService.storeToken(res);
-  //       },
-  //       error: (err) => {
-  //         console.error('kapachao!');
-  //         console.log(err);
-  //       }
-  //     });
-  // }
-
 }

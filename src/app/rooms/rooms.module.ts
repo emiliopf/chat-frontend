@@ -6,6 +6,7 @@ import { HttpClientModule } from '@angular/common/http';
 import { RoomInfoComponent } from './info/info.component';
 import { MatTableModule } from '@angular/material/table';
 import { MatIconModule } from '@angular/material/icon';
+import { MatProgressSpinnerModule } from '@angular/material/progress-spinner';
 
 
 @NgModule({
@@ -16,6 +17,7 @@ import { MatIconModule } from '@angular/material/icon';
     HttpClientModule,
     MatTableModule,
     MatIconModule,
+    MatProgressSpinnerModule,
   ],
   providers: [RoomsService]
 })
