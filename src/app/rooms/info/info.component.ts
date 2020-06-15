@@ -1,10 +1,8 @@
 import { Component, OnInit, OnDestroy, HostListener } from '@angular/core';
-import { MqttService, IMqttMessage } from 'ngx-mqtt';
-import { ActivatedRoute, Router } from '@angular/router';
-import { Subscription } from 'rxjs';
 import { MatTableDataSource } from '@angular/material/table';
 import * as jwt_decode from 'jwt-decode';
 import { RoomsService } from '../rooms.service';
+import * as Paho from 'paho-mqtt';
 
 
 export interface RoomInfo {
@@ -21,13 +19,11 @@ export interface RoomInfo {
 export class RoomInfoComponent implements OnInit, OnDestroy {
   displayedColumns: string[] = ['rol', 'id', 'alias'];
   dataSource = new MatTableDataSource<RoomInfo>();
-  subcription: Subscription;
   decodedToken;
   initialized = false;
+  mqttClient: Paho.Client;
 
   constructor(
-    private router: Router,
-    private mqqtService: MqttService,
     private roomsService: RoomsService
   ) { }
 
@@ -36,87 +32,64 @@ export class RoomInfoComponent implements OnInit, OnDestroy {
     const { idRoom, rol, idUser, alias } = this.decodedToken;
 
     const topic = `ROOM-${idRoom}/INFO`;
-    this.subscribeRoomInfoTopic(topic);
+    const clientId = `myclientid_${idUser}`;
 
-    if (rol === 'owner') {
-        const owner = {
-          idUser,
-          alias,
-          rol,
-        };
+    this.mqttClient = new Paho.Client('localhost', 15675, '/ws', clientId);
+    this.mqttClient.onConnectionLost = () => {
+      console.log('connection lost');
+    };
+    this.mqttClient.onMessageArrived = (message) => {
+      console.log('message arrived');
+      console.log(message);
+      const { payloadString: data } = message;
+      this.processMessages(JSON.parse(data));
+    };
 
-        this.dataSource.data = [owner];
+    const subscribeOptions: Paho.SubscribeOptions = {
+      onSuccess: () => {
+        console.log('subcription success');
+        this.roomsService.joinRoomSuccess().subscribe();
+      }
+    };
+
+    const options: Paho.ConnectionOptions = {
+      timeout: 3,
+      keepAliveInterval: 30,
+      onSuccess: () => {
+        console.log('connection success');
+        this.mqttClient.subscribe(topic, subscribeOptions);
         this.initialized = true;
-    }
+      },
+      onFailure: (message) => {
+        console.log('connection failure');
+        console.log(message);
+      }
+    };
+
+    console.log('foo');
+    this.mqttClient.connect(options);
   }
 
   ngOnDestroy(): void {
     console.log('bye');
+    this.mqttClient.disconnect();
     this.roomsService.logout()
       .subscribe();
-    this.subcription.unsubscribe();
   }
 
-  // @HostListener('window:beforeunload', ['$event']) unloadHandler(event: Event) {
-  //   console.log(event);
-  //   const result = confirm('Changes you made may not be saved.');
-  //   if (result) {
-  //     console.log(result);
-  //     this.router.navigate(['/welcome']);
-  //     return true;
-  //   }
-  //   this.router.navigate(['/welcome']);
-  //   event.returnValue = false; // stay on same page
-  // }
+  processMessages(message): void {
+    console.log('proccessing');
+    console.log(message);
+    const { content, event } = message;
 
-  subscribeRoomInfoTopic(topic: string): void {
-    console.log('inside subscribe new topic');
-    console.log(topic);
-    this.subcription = this.mqqtService.observe(topic)
-      .subscribe({
-        complete: () => {
-          console.log('complete subscribe');
-        },
-        next: (message: IMqttMessage) => {
-          console.log('next subscribe');
-          const { rol, idUser: userToken } = this.decodedToken;
-          const { content, type , event } = JSON.parse(message.payload.toString());
-          const { data } = this.dataSource;
-
-          console.log(message.payload.toString());
-          switch (event) {
-            case 'USER_JOIN':
-              if (rol === 'owner') {
-                const { user } = content;
-                data.push(user);
-                this.dataSource.data = data;
-                this.roomsService.sendRoomInfo(data).subscribe();
-              }
-              break;
-            case 'ROOM_UPDATE':
-              if (rol !== 'owner') {
-                this.dataSource.data = content;
-                this.initialized = true;
-              }
-              break;
-            case 'USER_LOGOUT':
-              const { idUser } = content;
-              const foo = data.filter((elem: RoomInfo) => {
-                if (elem.idUser !== idUser) {
-                  return true;
-                }
-                return false;
-              });
-              console.log(foo);
-              this.dataSource.data = foo;
-              break;
-          }
-        },
-        error: (err) => {
-          console.error('kapachao!');
-          console.log(err);
-        }
-      });
+    switch (event) {
+      case ('USER_JOIN'): {
+        const { user } = content;
+        const foo = this.dataSource.data;
+        foo.push(user);
+        console.log(foo);
+        this.dataSource.data = foo;
+      }
+    }
   }
-
 }
