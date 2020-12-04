@@ -31,15 +31,15 @@ export class RoomInfoComponent implements OnInit, OnDestroy {
     this.decodedToken = jwt_decode(localStorage.getItem('token'));
     const { idRoom, rol, idUser, alias } = this.decodedToken;
 
-    const topic = `ROOM-${idRoom}/INFO`;
-    const clientId = `myclientid_${idUser}`;
+    const topic = `ROOM-${idRoom}`;
+    const clientId = `-${idUser}-`;
 
-    this.mqttClient = new Paho.Client('localhost', 15675, '/ws', clientId);
+    this.mqttClient = new Paho.Client('ws://emiliodev/ws', clientId);
     this.mqttClient.onConnectionLost = () => {
       console.log('connection lost');
     };
     this.mqttClient.onMessageArrived = (message) => {
-      console.log('message arrived');
+      console.log('message arrived d');
       console.log(message);
       const { payloadString: data } = message;
       this.processMessages(JSON.parse(data));
@@ -47,8 +47,12 @@ export class RoomInfoComponent implements OnInit, OnDestroy {
 
     const subscribeOptions: Paho.SubscribeOptions = {
       onSuccess: () => {
-        console.log('subcription success');
-        this.roomsService.joinRoomSuccess().subscribe();
+        console.log('subcription success d');
+        if (rol !== 'owner') {
+          this.roomsService.joinRoomSuccess().subscribe();
+        } else {
+          this.dataSource.data = [{idUser, alias, rol}];
+        }
       }
     };
 
@@ -81,14 +85,36 @@ export class RoomInfoComponent implements OnInit, OnDestroy {
     console.log('proccessing');
     console.log(message);
     const { content, event } = message;
+    const { rol } = this.decodedToken;
 
     switch (event) {
       case ('USER_JOIN'): {
-        const { user } = content;
-        const foo = this.dataSource.data;
-        foo.push(user);
-        console.log(foo);
-        this.dataSource.data = foo;
+        if (rol === 'owner') {
+          const { user } = content;
+          const { data: newData } = this.dataSource;
+          newData.push(user);
+          this.dataSource.data = newData;
+          this.roomsService.sendRoomInfo(newData);
+        }
+        break;
+      }
+      case ('REFRESH'): {
+        if (rol !== 'owner') {
+          this.dataSource.data = content;
+        }
+        break;
+      }
+      case ('USER_LEFT'): {
+        console.log('user left');
+        const { idUser: userLeft } = content;
+        const { data } = this.dataSource;
+
+        const filteredData = data.filter((user) => {
+          return user.idUser !== userLeft;
+        });
+
+        this.dataSource.data = filteredData;
+        break;
       }
     }
   }

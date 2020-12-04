@@ -65,7 +65,7 @@ export class StartDialogComponent implements OnInit{
   joinRoom() {
     const { joinRoomIdCtrl: idRoom , joinRoomPasswordCtrl: password } = this.joinRoomFormGroup.value;
     const { aliasCtrl: alias } = this.userFormGroup.value;
-    return this.roomsService.joinRoom(idRoom, password, alias)
+    return this.roomsService.joinRoom({idRoom, password, alias})
       .subscribe({
         complete: () => {
           console.log('complete join room');
@@ -121,9 +121,10 @@ export class StartDialogComponent implements OnInit{
           // this.router.navigate([`/rooms/${alias}`]);
           this.router.navigate(['/play']);
         },
-        error: (err) => {
+        error: (res) => {
           console.error('kapachao!');
-          console.log(err);
+          const {error: message} = res;
+          console.error(message);
         }
       });
   }

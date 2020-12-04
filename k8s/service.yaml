@@ -5,6 +5,9 @@ metadata:
 spec:
   selector:
     app: frontend
+  # ports:
+  # - port: 80
+  #   targetPort: 80
   ports:
-  - port: 80
-    targetPort: 80
+  - port: 4200
+    targetPort: 4200

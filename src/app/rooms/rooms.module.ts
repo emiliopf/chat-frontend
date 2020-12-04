@@ -7,10 +7,11 @@ import { RoomInfoComponent } from './info/info.component';
 import { MatTableModule } from '@angular/material/table';
 import { MatIconModule } from '@angular/material/icon';
 import { MatProgressSpinnerModule } from '@angular/material/progress-spinner';
+import { RoomChatComponent } from './chat/chat.component';
 
 
 @NgModule({
-  declarations: [RoomInfoComponent],
+  declarations: [RoomInfoComponent, RoomChatComponent],
   imports: [
     CommonModule,
     BrowserModule,
