@@ -4,11 +4,27 @@
   
     <ng-container matColumnDef="content">
       <th mat-header-cell *matHeaderCellDef> <h1>ROOM {{ decodedToken.idRoom }}</h1> </th>
-      <td mat-cell *matCellDef="let element" [ngClass]="decodedToken.idUser == element.senderId ? 'own-message' : ''" >{{element.content}}</td>
+
+      <td mat-cell *matCellDef="let element" [ngClass]="decodedToken.idUser == element.senderId ? 'own-message' : ''" >
+        <div fxLayout="row" [fxLayoutAlign]="decodedToken.idUser == element.senderId ? 'end center' : ''">
+          <div class="speech-bubble" fxFlex="nogrow">
+            <cite *ngIf="decodedToken.idUser != element.senderId && !element.sameSender">{{element.senderAlias}}</cite>
+            <p>{{element.input}}</p>
+          </div>
+        </div>
+      </td>
     </ng-container>
   
     <tr mat-header-row *matHeaderRowDef="displayedColumns"></tr>
     <tr mat-row *matRowDef="let row; columns: displayedColumns;"></tr>
   </table>
-  
+
+  <form [formGroup]="chatFormGroup">
+    <div fxLayout="row" fxLayoutAlign="center center">
+      <mat-form-field fxFlex="90" appearance="outline">
+        <input matInput type="text" formControlName="chatCtrl" required/>
+      </mat-form-field>
+      <button fxFlex="10" type='button' mat-button (click)="sendMessage()">Send</button>
+    </div>
+  </form>
 </div>

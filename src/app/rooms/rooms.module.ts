@@ -8,6 +8,11 @@ import { MatTableModule } from '@angular/material/table';
 import { MatIconModule } from '@angular/material/icon';
 import { MatProgressSpinnerModule } from '@angular/material/progress-spinner';
 import { RoomChatComponent } from './chat/chat.component';
+import { MatFormFieldModule } from '@angular/material/form-field';
+import { MatInputModule } from '@angular/material/input';
+import { MatButtonModule } from '@angular/material/button';
+import { ReactiveFormsModule } from '@angular/forms';
+import { FlexLayoutModule } from '@angular/flex-layout';
 
 
 @NgModule({
@@ -16,9 +21,14 @@ import { RoomChatComponent } from './chat/chat.component';
     CommonModule,
     BrowserModule,
     HttpClientModule,
+    ReactiveFormsModule,
     MatTableModule,
     MatIconModule,
     MatProgressSpinnerModule,
+    MatFormFieldModule,
+    MatInputModule,
+    MatButtonModule,
+    FlexLayoutModule
   ],
   providers: [RoomsService]
 })

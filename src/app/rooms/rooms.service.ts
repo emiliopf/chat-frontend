@@ -71,6 +71,11 @@ export class RoomsService {
       );
   }
 
+  sendMessage(data: any) {
+    console.log('room service - sendMessage');
+    return this.http.post(`${environment.http_protocol}://${environment.rooms_domain}/message`, data);
+  }
+
   private handleError(error: HttpErrorResponse) {
     if (error.error instanceof ErrorEvent) {
       // A client-side or network error occurred. Handle it accordingly.
