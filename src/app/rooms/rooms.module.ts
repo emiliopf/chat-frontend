@@ -3,7 +3,6 @@ import { CommonModule } from '@angular/common';
 import { RoomsService } from './rooms.service';
 import { BrowserModule } from '@angular/platform-browser';
 import { HttpClientModule } from '@angular/common/http';
-import { RoomInfoComponent } from './info/info.component';
 import { MatTableModule } from '@angular/material/table';
 import { MatIconModule } from '@angular/material/icon';
 import { MatProgressSpinnerModule } from '@angular/material/progress-spinner';
@@ -16,7 +15,7 @@ import { FlexLayoutModule } from '@angular/flex-layout';
 
 
 @NgModule({
-  declarations: [RoomInfoComponent, RoomChatComponent],
+  declarations: [RoomChatComponent],
   imports: [
     CommonModule,
     BrowserModule,
