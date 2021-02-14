@@ -48,6 +48,7 @@ export class RoomChatComponent implements OnInit, OnDestroy {
     const destination = `/exchange/ROOM-${idRoom}/MESSAGES`;
 
     this.topicSubscription = this.rxStompService.watch(destination).subscribe((message: Message) => {
+      console.log(this.topicSubscription);
       const { body } = message;
       this.processMessage(body);
     });
