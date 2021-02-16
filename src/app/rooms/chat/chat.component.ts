@@ -1,4 +1,4 @@
-import { Component, OnInit, OnDestroy, HostListener } from '@angular/core';
+import { Component, OnInit, OnDestroy, HostListener, ViewChild, ElementRef } from '@angular/core';
 import { MatTableDataSource } from '@angular/material/table';
 import * as jwt_decode from 'jwt-decode';
 import { RoomsService } from '../rooms.service';
@@ -15,6 +15,7 @@ export interface ChatMessage {
   senderId: number;
   senderAlias: string;
   sameSender: boolean;
+  ownMessage: boolean;
 }
 
 @Component({
@@ -60,10 +61,16 @@ export class RoomChatComponent implements OnInit, OnDestroy {
   }
 
   processMessage(message): void {
-    console.log('proccessing...');
+    console.log('proccessing message...');
+    const { idUser } = this.decodedToken;
     const { content: { user: { alias: senderAlias }, input }, event, senderId } = JSON.parse(message);
 
     let sameSender = false;
+    let ownMessage = false;
+
+    if (senderId === idUser) {
+      ownMessage = true;
+    }
 
     if (this.chat.length > 0) {
       const { senderId: previousSenderId } = this.chat[this.chat.length - 1];
@@ -72,7 +79,7 @@ export class RoomChatComponent implements OnInit, OnDestroy {
       }
     }
 
-    this.chat.push({ input, senderId, senderAlias, sameSender });
+    this.chat.push({ input, senderId, senderAlias, sameSender, ownMessage });
     this.dataSource = new MatTableDataSource(this.chat);
   }
 

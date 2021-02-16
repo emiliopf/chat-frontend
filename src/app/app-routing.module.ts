@@ -6,7 +6,7 @@ import { RoomChatComponent } from './rooms/chat/chat.component';
 const routes: Routes = [
   { path: '', redirectTo: 'welcome', pathMatch: 'full' },
   { path: 'welcome', component: StartComponent },
-  { path: 'rooms/:alias', component: RoomChatComponent },
+  { path: 'rooms/:idRoom', component: RoomChatComponent },
 ];
 
 @NgModule({

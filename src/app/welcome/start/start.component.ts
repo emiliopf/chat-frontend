@@ -5,6 +5,8 @@ import { UsersService } from '../../users/users.service';
 import { MatStepper } from '@angular/material/stepper';
 import { RoomsService } from 'src/app/rooms/rooms.service';
 import { Router } from '@angular/router';
+import * as jwt_decode from 'jwt-decode';
+
 
 @Component({
   selector: 'app-start',
@@ -118,8 +120,8 @@ export class StartDialogComponent implements OnInit{
         next: (res: any) => {
           console.log(res);
           this.usersService.storeToken(res);
-          this.router.navigate([`/rooms/${alias}`]);
-          // this.router.navigate(['/room']);
+          const { idRoom }= jwt_decode(localStorage.getItem('token'));
+          this.router.navigate([`/rooms/${idRoom}`]);
         },
         error: (res) => {
           console.error('kapachao!');
