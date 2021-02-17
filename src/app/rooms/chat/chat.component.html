@@ -1,12 +1,15 @@
 
 
-<mat-card fxFill fxLayout="column" fxLayoutAlign="center stretch">
-  <mat-card-header fxFlex="10" fxLayout="column" fxLayoutAlign="end start">
-    <mat-card-title>{{decodedToken.alias}}'S ROOM</mat-card-title>
-    <mat-card-subtitle>#{{decodedToken.idRoom}}</mat-card-subtitle>
+<mat-card fxFill fxLayout="column">
+  <mat-card-header fxFlex="10">
+    <mat-card-title>ROOM #{{decodedToken.idRoom}}</mat-card-title>
+    <mat-card-subtitle>{{decodedToken.rol}}</mat-card-subtitle>
+    <button mat-mini-fab color="warn" class="logout-button" (click)="openDialog()">
+      <mat-icon>logout</mat-icon>
+    </button>
   </mat-card-header>
 
-  <mat-card-content fxFlex="80" style="overflow-y: auto;">
+  <mat-card-content #scrollableDiv fxFlex="80" style="overflow-y: auto;">
     <table mat-table [dataSource]="dataSource" fxFlex="100">
 
       <ng-container matColumnDef="content">
@@ -14,7 +17,7 @@
         <td mat-cell *matCellDef="let element">
           <div [fxLayoutAlign]="element.ownMessage ? 'end' : 'start'">
             <div class="speech-bubble" [ngClass]="{'same-sender': element.sameSender, 'diff-sender': !element.sameSender, 'own-message': element.ownMessage}">
-              <cite *ngIf="!element.ownMessage && !element.sameSender">{{element.senderAlias}}</cite>
+              <cite *ngIf="!element.ownMessage && !element.sameSender">{{element.senderAlias}}#{{element.senderId}}</cite>
               <p>{{element.input}}</p>
             </div>
           </div>

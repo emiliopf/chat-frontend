@@ -29,6 +29,7 @@ td.mat-cell{
   font-size: 1rem;
   font-style: normal;
   letter-spacing: 0.5px;
+  white-space: nowrap;
   color: black;
 }
 
@@ -44,7 +45,12 @@ td.mat-cell{
   margin-top: 2.5rem;
 }
 
+.logout-button {
+  position: fixed;
+  right: 10px;
+}
 
 mat-card-header {
   text-transform: uppercase;
 }
+

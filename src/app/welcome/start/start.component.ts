@@ -76,7 +76,7 @@ export class StartDialogComponent implements OnInit{
         next: (res: any) => {
           console.log(res);
           this.usersService.storeToken(res);
-          this.router.navigate(['/play']);
+          this.router.navigate([`/rooms/${idRoom}`]);
         },
         error: (err) => {
           console.error('kapachao!');

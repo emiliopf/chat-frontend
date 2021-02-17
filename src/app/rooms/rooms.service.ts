@@ -32,7 +32,7 @@ export class RoomsService {
   }
 
   checkRoom(data) {
-    return this.http.get(`${environment.http_protocol}://${environment.rooms_domain}/info/${data}`)
+    return this.http.get(`${environment.http_protocol}://${environment.rooms_domain}/${data}`)
       .pipe(
         catchError(this.handleError)
       );

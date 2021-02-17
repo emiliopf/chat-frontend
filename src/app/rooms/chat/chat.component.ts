@@ -8,6 +8,9 @@ import { RxStompService } from '@stomp/ng2-stompjs';
 import { Message } from '@stomp/stompjs';
 import { Subscription } from 'rxjs';
 import { FormControl, FormGroup, FormBuilder, Validators } from '@angular/forms';
+import { MatDialog, MatDialogRef } from '@angular/material/dialog';
+import { Router } from '@angular/router';
+import { UsersService } from '../../users/users.service';
 
 
 export interface ChatMessage {
@@ -30,11 +33,13 @@ export class RoomChatComponent implements OnInit, OnDestroy {
   decodedToken;
   private topicSubscription: Subscription;
   chatFormGroup: FormGroup;
+  @ViewChild('scrollableDiv')scrollableDiv: ElementRef;
 
   constructor(
     private roomsService: RoomsService,
     private rxStompService: RxStompService,
     private fb: FormBuilder,
+    public logoutDialog: MatDialog
     )
   {}
 
@@ -58,6 +63,7 @@ export class RoomChatComponent implements OnInit, OnDestroy {
 
   ngOnDestroy(): void {
     this.topicSubscription.unsubscribe();
+    console.log('onDestroy');
   }
 
   processMessage(message): void {
@@ -81,6 +87,8 @@ export class RoomChatComponent implements OnInit, OnDestroy {
 
     this.chat.push({ input, senderId, senderAlias, sameSender, ownMessage });
     this.dataSource = new MatTableDataSource(this.chat);
+
+    // this.scrollableDiv.nativeElement.scrollTop = this.scrollableDiv.nativeElement.scrollHeight;
   }
 
   sendMessage(): void {
@@ -100,6 +108,35 @@ export class RoomChatComponent implements OnInit, OnDestroy {
           console.error(message);
         }
       });
+  }
+
+  openDialog() {
+    this.logoutDialog.open(LogoutDialogComponent);
+  }
+
+}
+
+
+@Component({
+  selector: 'app-chat-logout-dialog',
+  templateUrl: './logout-dialog.component.html',
+  styleUrls: ['./logout-dialog.component.css'],
+})
+export class LogoutDialogComponent implements OnInit {
+
+  constructor(
+    private dialogRef: MatDialogRef<LogoutDialogComponent>,
+    private router: Router,
+    private usersService: UsersService,
+  ) {};
+
+  ngOnInit() {};
+
+  logout() {
+    this.usersService.clearToken();
+    this.dialogRef.close();
+    this.router.navigate(['/welcome']);
+    console.log('logout');
   }
 
 }

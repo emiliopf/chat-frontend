@@ -25,6 +25,10 @@ export class UsersService {
     localStorage.setItem('token', token);
   }
 
+  clearToken() {
+    localStorage.clear();
+  }
+
 
   private handleError(error: HttpErrorResponse) {
     if (error.error instanceof ErrorEvent) {
