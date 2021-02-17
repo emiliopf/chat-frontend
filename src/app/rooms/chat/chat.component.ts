@@ -19,6 +19,7 @@ export interface ChatMessage {
   senderAlias: string;
   sameSender: boolean;
   ownMessage: boolean;
+  event: string;
 }
 
 @Component({
@@ -39,10 +40,10 @@ export class RoomChatComponent implements OnInit, OnDestroy {
     private roomsService: RoomsService,
     private rxStompService: RxStompService,
     private fb: FormBuilder,
-    public logoutDialog: MatDialog
+    public logoutDialog: MatDialog,
     )
   {}
-
+    
   ngOnInit(): void {
     this.decodedToken = jwt_decode(localStorage.getItem('token'));
     const { idRoom, rol, idUser, alias } = this.decodedToken;
@@ -59,11 +60,14 @@ export class RoomChatComponent implements OnInit, OnDestroy {
       this.processMessage(body);
     });
 
+    this.rxStompService.connected$.subscribe(() => {
+      this.sendJoinSuccess();
+    })
   }
 
   ngOnDestroy(): void {
-    this.topicSubscription.unsubscribe();
     console.log('onDestroy');
+    this.topicSubscription.unsubscribe();
   }
 
   processMessage(message): void {
@@ -79,13 +83,13 @@ export class RoomChatComponent implements OnInit, OnDestroy {
     }
 
     if (this.chat.length > 0) {
-      const { senderId: previousSenderId } = this.chat[this.chat.length - 1];
-      if (senderId === previousSenderId) {
+      const { senderId: previousSenderId, event: previousEvent } = this.chat[this.chat.length - 1];
+      if (previousEvent ==='NEW_MESSAGE' && senderId === previousSenderId) {
         sameSender = true;
       }
     }
 
-    this.chat.push({ input, senderId, senderAlias, sameSender, ownMessage });
+    this.chat.push({ input, senderId, senderAlias, sameSender, ownMessage, event });
     this.dataSource = new MatTableDataSource(this.chat);
 
     // this.scrollableDiv.nativeElement.scrollTop = this.scrollableDiv.nativeElement.scrollHeight;
@@ -98,6 +102,24 @@ export class RoomChatComponent implements OnInit, OnDestroy {
         complete: () => {
           console.log('complete send message');
           this.chatFormGroup.reset();
+        },
+        next: (res: any) => {
+          console.log(res);
+        },
+        error: (res) => {
+          console.error('kapachao!');
+          const {error: message} = res;
+          console.error(message);
+        }
+      });
+  }
+
+  sendJoinSuccess(): void {
+    const { chatCtrl: input } = this.chatFormGroup.value;
+    this.roomsService.joinRoomSuccess()
+      .subscribe({
+        complete: () => {
+          console.log('complete send join success');
         },
         next: (res: any) => {
           console.log(res);
@@ -126,17 +148,14 @@ export class LogoutDialogComponent implements OnInit {
 
   constructor(
     private dialogRef: MatDialogRef<LogoutDialogComponent>,
-    private router: Router,
     private usersService: UsersService,
   ) {};
 
   ngOnInit() {};
 
   logout() {
-    this.usersService.clearToken();
+    this.usersService.logout();
     this.dialogRef.close();
-    this.router.navigate(['/welcome']);
-    console.log('logout');
   }
 
 }

@@ -11,14 +11,6 @@ export class RoomsService {
 
   constructor(private http: HttpClient) { }
 
-  // createRoom(data) {
-  //   console.log('room service - createRoom');
-  //   return this.http.post(`${environment.http_protocol}://${environment.rooms_domain}/create`, data)
-  //     .pipe(
-  //       catchError(this.handleError)
-  //     );
-  // }
-
   createRoom(data) {
     console.log('room service - createRoom');
     return this.http.post(`${environment.http_protocol}://${environment.rooms_domain}/create`, data);
@@ -63,7 +55,7 @@ export class RoomsService {
       );
   }
 
-  logout() {
+  sendLogout() {
     console.log('logoutService');
     return this.http.post(`${environment.http_protocol}://${environment.rooms_domain}/logout`, {})
       .pipe(

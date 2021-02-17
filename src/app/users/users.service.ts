@@ -3,6 +3,8 @@ import { HttpClient, HttpErrorResponse } from '@angular/common/http';
 import { throwError } from 'rxjs';
 import { catchError } from 'rxjs/operators';
 import { environment } from '../../environments/environment';
+import { RoomsService } from '../rooms/rooms.service';
+import { Router } from '@angular/router';
 
 
 @Injectable({
@@ -10,7 +12,11 @@ import { environment } from '../../environments/environment';
 })
 export class UsersService {
 
-  constructor(private http: HttpClient) { }
+  constructor(
+    private http: HttpClient,
+    private router: Router,
+    private roomsService: RoomsService
+    ) { }
 
 
   createUser(data) {
@@ -27,6 +33,25 @@ export class UsersService {
 
   clearToken() {
     localStorage.clear();
+  }
+
+  logout() {
+    this.roomsService.sendLogout()
+      .subscribe({
+        complete: () => {
+          console.log('complete send logout');
+        },
+        next: (res: any) => {
+          console.log(res);
+        },
+        error: (res) => {
+          console.error('kapachao!');
+          const {error: message} = res;
+          console.error(message);
+        }
+      });
+    this.clearToken();
+    this.router.navigate(['/welcome']);
   }
 
 
