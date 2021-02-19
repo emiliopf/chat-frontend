@@ -5,6 +5,7 @@ import { catchError } from 'rxjs/operators';
 import { environment } from '../../environments/environment';
 import { RoomsService } from '../rooms/rooms.service';
 import { Router } from '@angular/router';
+import { RxStompService } from '@stomp/ng2-stompjs';
 
 
 @Injectable({
@@ -15,7 +16,8 @@ export class UsersService {
   constructor(
     private http: HttpClient,
     private router: Router,
-    private roomsService: RoomsService
+    private roomsService: RoomsService,
+    private rxStompService: RxStompService
     ) { }
 
 
@@ -52,6 +54,7 @@ export class UsersService {
       });
     this.clearToken();
     this.router.navigate(['/welcome']);
+    this.rxStompService.deactivate();
   }
 
 

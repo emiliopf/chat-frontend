@@ -9,7 +9,7 @@ export const stompConfig: InjectableRxStompConfig = {
   connectHeaders: {
     login: 'guest',
     passcode: 'guest',
-    userid: 'foo',
+    // userid: 'foo',
     // 'client-id': 'fpoiuy',
     // id: 'mycustomid'
   },

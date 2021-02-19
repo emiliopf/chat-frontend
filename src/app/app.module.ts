@@ -3,18 +3,11 @@ import { BrowserModule } from '@angular/platform-browser';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import { FormsModule } from '@angular/forms';
 
-import {
-  InjectableRxStompConfig,
-  RxStompService,
-  rxStompServiceFactory,
-} from '@stomp/ng2-stompjs';
-
-import { stompConfig } from './stomp.config';
-
 import { AppRoutingModule } from './app-routing.module';
 import { AppComponent } from './app.component';
 import { WelcomeModule } from './welcome/welcome.module';
 import { httpInterceptorProviders } from './http-interceptors/index';
+import { RxStompService } from '@stomp/ng2-stompjs';
 @NgModule({
   declarations: [
     AppComponent,
@@ -28,15 +21,7 @@ import { httpInterceptorProviders } from './http-interceptors/index';
   ],
   providers: [
     httpInterceptorProviders,
-    {
-      provide: InjectableRxStompConfig,
-      useValue: stompConfig,
-    },
-    {
-      provide: RxStompService,
-      useFactory: rxStompServiceFactory,
-      deps: [InjectableRxStompConfig],
-    },
+    RxStompService
   ],
   bootstrap: [AppComponent]
 })

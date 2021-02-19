@@ -1,17 +1,15 @@
-import { Component, OnInit, OnDestroy, HostListener, ViewChild, ElementRef } from '@angular/core';
+import { Component, OnInit, OnDestroy, ViewChild, ElementRef } from '@angular/core';
 import { MatTableDataSource } from '@angular/material/table';
 import * as jwt_decode from 'jwt-decode';
 import { RoomsService } from '../rooms.service';
 
-
 import { RxStompService } from '@stomp/ng2-stompjs';
 import { Message } from '@stomp/stompjs';
 import { Subscription } from 'rxjs';
-import { FormControl, FormGroup, FormBuilder, Validators } from '@angular/forms';
+import { FormGroup, FormBuilder, Validators } from '@angular/forms';
 import { MatDialog, MatDialogRef } from '@angular/material/dialog';
-import { Router } from '@angular/router';
 import { UsersService } from '../../users/users.service';
-
+import { stompConfig } from '../../stomp.config';
 
 export interface ChatMessage {
   input: string;
@@ -52,6 +50,9 @@ export class RoomChatComponent implements OnInit, OnDestroy {
       chatCtrl: ['', Validators.required]
     });
 
+    this.rxStompService.configure(stompConfig);
+    this.rxStompService.activate();
+
     const destination = `/exchange/ROOM-${idRoom}/MESSAGES`;
 
     this.topicSubscription = this.rxStompService.watch(destination).subscribe((message: Message) => {
@@ -62,12 +63,13 @@ export class RoomChatComponent implements OnInit, OnDestroy {
 
     this.rxStompService.connected$.subscribe(() => {
       this.sendJoinSuccess();
-    })
+    });
   }
 
   ngOnDestroy(): void {
     console.log('onDestroy');
     this.topicSubscription.unsubscribe();
+    this.rxStompService.deactivate();
   }
 
   processMessage(message): void {
