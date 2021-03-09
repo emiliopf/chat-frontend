@@ -49,4 +49,4 @@ Rabbitmq Auth Backend microservice is responsible of auth all operations over Ra
 * [Angular](https://angular.io/)
 ## License
 
-  Nest is [MIT licensed](LICENSE).
+[MIT licensed](LICENSE).
