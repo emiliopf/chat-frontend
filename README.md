@@ -1,27 +1,52 @@
-# Frontend
+<p align="center">
 
-This project was generated with [Angular CLI](https://github.com/angular/angular-cli) version 9.1.5.
+  <h3 align="center">Frontend - <a href="https://github.com/emiliopf/chat-app">CHAT APP</a></h3>
+  <p align="center">
+    Frontend microservice.
+    <br />
+  </p>
+</p>
 
-## Development server
+<!-- TABLE OF CONTENTS -->
+<details open="open">
+  <summary>Table of Contents</summary>
+  <ol>
+    <li><a href="#about-the-project">About The Project</a></li>
+    <li>
+      <a href="#getting-started">Getting Started</a>
+      <ul>
+        <li><a href="#prerequisites">Prerequisites</a></li>
+        <li><a href="#set-up">Set Up</a></li>
+      </ul>
+    </li>
+    <li><a href="#built-with">Built With</a></li>
+    <li><a href="#license">License</a></li>
+  </ol>
+</details>
+<br />
 
-Run `ng serve` for a dev server. Navigate to `http://localhost:4200/`. The app will automatically reload if you change any of the source files.
 
-## Code scaffolding
+## About The Project
 
-Run `ng generate component component-name` to generate a new component. You can also use `ng generate directive|pipe|service|class|guard|interface|enum|module`.
 
-## Build
+Rabbitmq Auth Backend microservice is responsible of auth all operations over RabbitMQ. The brokes must have [rabbitmq_auth_backend_http](https://github.com/rabbitmq/rabbitmq-server/tree/master/deps/rabbitmq_auth_backend_http) enabled
 
-Run `ng build` to build the project. The build artifacts will be stored in the `dist/` directory. Use the `--prod` flag for a production build.
 
-## Running unit tests
+## Gettiing Started
 
-Run `ng test` to execute the unit tests via [Karma](https://karma-runner.github.io).
+### Prerequisites
 
-## Running end-to-end tests
+* [Node](https://nodejs.org/en/) v15.11 or higher.
+* [Rooms](https://github.com/emiliopf/chat-rooms) microservice.
 
-Run `ng e2e` to execute the end-to-end tests via [Protractor](http://www.protractortest.org/).
+### Set Up
 
-## Further help
+1. Add [host](/src/assets/env-config) variables.
+3. Launch `npm run start`
 
-To get more help on the Angular CLI use `ng help` or go check out the [Angular CLI README](https://github.com/angular/angular-cli/blob/master/README.md).
+## Build with
+
+* [Angular](https://angular.io/)
+## License
+
+  Nest is [MIT licensed](LICENSE).
