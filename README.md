@@ -41,7 +41,7 @@ Rabbitmq Auth Backend microservice is responsible of auth all operations over Ra
 
 ### Set Up
 
-1. Add [host](/src/assets/env-config) variables.
+1. Add [host](/src/assets/env-config.json) variables.
 3. Launch `npm run start`
 
 ## Build with
