@@ -50,6 +50,10 @@ export class RoomChatComponent implements OnInit, OnDestroy {
       chatCtrl: ['', Validators.required]
     });
 
+    stompConfig.connectHeaders = {
+      login: `${idUser}-${idRoom}`,
+      passcode: localStorage.getItem('token')
+    }
     this.rxStompService.configure(stompConfig);
     this.rxStompService.activate();
 
@@ -61,15 +65,17 @@ export class RoomChatComponent implements OnInit, OnDestroy {
       this.processMessage(body);
     });
 
-    this.rxStompService.connected$.subscribe(() => {
+    // this.rxStompService.connected$.subscribe(() => {
+    //   console.log('connected');
       this.sendJoinSuccess();
-    });
+    // });
   }
 
   ngOnDestroy(): void {
     console.log('onDestroy');
     this.topicSubscription.unsubscribe();
     this.rxStompService.deactivate();
+    this.rxStompService.stompClient.forceDisconnect();
   }
 
   processMessage(message): void {

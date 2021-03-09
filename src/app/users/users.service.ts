@@ -21,13 +21,6 @@ export class UsersService {
     ) { }
 
 
-  createUser(data) {
-    return this.http.post(`${environment.http_protocol}://${environment.users_domain}:${environment.users_port}/users/create`, data)
-      .pipe(
-        catchError(this.handleError)
-      );
-  }
-
   storeToken(response) {
     const { token } = response;
     localStorage.setItem('token', token);
@@ -55,6 +48,7 @@ export class UsersService {
     this.clearToken();
     this.router.navigate(['/welcome']);
     this.rxStompService.deactivate();
+    this.rxStompService.stompClient.forceDisconnect();
   }
 
 

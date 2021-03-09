@@ -3,28 +3,27 @@ import { HttpClient, HttpErrorResponse } from '@angular/common/http';
 import { environment } from 'src/environments/environment';
 import { catchError } from 'rxjs/operators';
 import { throwError } from 'rxjs';
+import envConfig from '../../assets/env-config.json';
 
 @Injectable({
   providedIn: 'root'
 })
 export class RoomsService {
-
   constructor(private http: HttpClient) { }
 
   createRoom(data) {
-    console.log('room service - createRoom');
-    return this.http.post(`${environment.http_protocol}://${environment.rooms_domain}/create`, data);
+    return this.http.post(`${environment.http_protocol}://${envConfig.host}${environment.rooms_path}/create`, data);
   }
 
   roomInfo(data) {
-    return this.http.get(`${environment.http_protocol}://${environment.rooms_domain}/${data}`)
+    return this.http.get(`${environment.http_protocol}://${envConfig.host}${environment.rooms_path}/${data}`)
       .pipe(
         catchError(this.handleError)
       );
   }
 
   checkRoom(data) {
-    return this.http.get(`${environment.http_protocol}://${environment.rooms_domain}/${data}`)
+    return this.http.get(`${environment.http_protocol}://${envConfig.host}${environment.rooms_path}/${data}`)
       .pipe(
         catchError(this.handleError)
       );
@@ -32,7 +31,7 @@ export class RoomsService {
 
   joinRoom(data) {
     console.log('room service - joinRoom');
-    return this.http.post(`${environment.http_protocol}://${environment.rooms_domain}/login`, data)
+    return this.http.post(`${environment.http_protocol}://${envConfig.host}${environment.rooms_path}/login`, data)
       .pipe(
         catchError(this.handleError)
       );
@@ -40,7 +39,7 @@ export class RoomsService {
 
   joinRoomSuccess() {
     console.log('join success init');
-    return this.http.post(`${environment.http_protocol}://${environment.rooms_domain}/loginsuccess`, {})
+    return this.http.post(`${environment.http_protocol}://${envConfig.host}${environment.rooms_path}/loginsuccess`, {})
     .pipe(
       catchError(this.handleError)
     );
@@ -49,7 +48,7 @@ export class RoomsService {
   sendRoomInfo(data: any) {
     console.log('sendRoomInfo');
     console.log(data);
-    return this.http.post(`${environment.http_protocol}://${environment.rooms_domain}/sendinfo`, data)
+    return this.http.post(`${environment.http_protocol}://${envConfig.host}${environment.rooms_path}/sendinfo`, data)
       .pipe(
         catchError(this.handleError)
       );
@@ -57,7 +56,7 @@ export class RoomsService {
 
   sendLogout() {
     console.log('logoutService');
-    return this.http.post(`${environment.http_protocol}://${environment.rooms_domain}/logout`, {})
+    return this.http.post(`${environment.http_protocol}://${envConfig.host}${environment.rooms_path}/logout`, {})
       .pipe(
         catchError(this.handleError)
       );
@@ -65,7 +64,7 @@ export class RoomsService {
 
   sendMessage(data: any) {
     console.log('room service - sendMessage');
-    return this.http.post(`${environment.http_protocol}://${environment.rooms_domain}/message`, data);
+    return this.http.post(`${environment.http_protocol}://${envConfig.host}${environment.rooms_path}/message`, data);
   }
 
   private handleError(error: HttpErrorResponse) {
@@ -86,4 +85,5 @@ export class RoomsService {
     return throwError(
       'Something bad happened; please try again later.');
   }
+
 }

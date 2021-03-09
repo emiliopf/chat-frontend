@@ -5,13 +5,7 @@
 export const environment = {
   production: false,
   http_protocol: 'http',
-  // users_domain: 'localhost',
-  // users_port: '3000',
-  // rooms_domain: 'localhost',
-  // rooms_port: '3001'
-  users_domain: 'users',
-  users_port: '3000',
-  rooms_domain: 'emiliodev/api/rooms',
+  rooms_path: '/api/rooms',
   rooms_port: '3000'
 };
 

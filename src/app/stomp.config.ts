@@ -1,14 +1,15 @@
 import { InjectableRxStompConfig } from '@stomp/ng2-stompjs';
+import envConfig from '../assets/env-config.json'
 
 export const stompConfig: InjectableRxStompConfig = {
   // Which server?
-  brokerURL: 'ws://emiliodev/ws',
+  brokerURL: `ws://${envConfig.host}/ws`,
 
   // Headers
   // Typical keys: login, passcode, host
   connectHeaders: {
-    login: 'guest',
-    passcode: 'guest',
+    login: '',
+    passcode: '',
     // userid: 'foo',
     // 'client-id': 'fpoiuy',
     // id: 'mycustomid'
