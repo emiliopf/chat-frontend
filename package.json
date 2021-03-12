@@ -24,7 +24,6 @@
     "@angular/platform-browser-dynamic": "~10.2.4",
     "@angular/router": "~10.2.4",
     "@stomp/ng2-stompjs": "^8.0.0",
-    "@types/paho-mqtt": "^1.0.4",
     "jwt-decode": "^2.2.0",
     "rxjs": "~6.5.4",
     "tslib": "^2.0.0",
